@@ -21,29 +21,34 @@ function update(ev) {
     for (let j = 0; j < columnLength; j++) {
       let x = i * size;
       let y = j * size;
-      let coefX = x / ev.clientX;
-      let coefY = y / ev.clientY;
-      ctx.strokeStyle = `rgba(140,106,173, ${(coefX * coefY)}`;
+      let coefX = x - ev.clientX;
+      let coefY = y - ev.clientY;
+      let shift = 400 / Math.abs(coefX)
+      ctx.strokeStyle = `rgba(${shift * 100},106,173, ${shift / 5}`;
+
       
       ctx.beginPath();
-      ctx.arc(x + ((ev.clientX - x) * coefX), y + ((ev.clientX - x) * coefY), coefX * coefY * 10, 0, 2 * Math.PI);
+      ctx.arc(x + (500 / coefX * coefY), y + (500 / coefX * coefY), shift, 0, 2 * Math.PI);
       ctx.stroke();
     }
   }
 }
 
-document.addEventListener('mousemove', ev => update(ev))
-
-// for (let i = 0; i < rowLength; i++) {
-//   for (let j = 0; j < columnLength; j++) {
-//     let x = i * size;
-//     let y = j * size;
-//     let coefX = x / ev.clientX;
-//     let coefY = y / ev.clientY;
-//     ctx.strokeStyle = `rgba(140,106,173, ${(coefX * coefY)}`;
-    
-//     ctx.beginPath();
-//     ctx.arc(x + ((ev.clientX - x) * coefX), y + ((ev.clientX - x) * coefY), coefX * coefY * 10, 0, 2 * Math.PI);
-//     ctx.stroke();
+// function update(ev) {
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   for (let i = 0; i < rowLength; i++) {
+//     for (let j = 0; j < columnLength; j++) {
+//       let x = i * size;
+//       let y = j * size;
+//       let coefX = x / ev.clientX;
+//       let coefY = y / ev.clientY;
+//       ctx.strokeStyle = `rgba(140,106,173, ${(coefX * coefY)}`;
+      
+//       ctx.beginPath();
+//       ctx.arc(x + ((ev.clientX - x) * coefX), y + ((ev.clientX - x) * coefY), coefX * coefY * 10, 0, 2 * Math.PI);
+//       ctx.stroke();
+//     }
 //   }
 // }
+
+document.addEventListener('mousemove', ev => update(ev))
