@@ -16,7 +16,7 @@ for (let index = 0; index < columnLength; index++) {
   field.push(new Array(rowLength).fill(null));
 }
 let event;
-let update = animationOne;
+let update = animationThree;
 
 function animationOne() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -54,16 +54,53 @@ function animationTwo() {
   }
 }
 
+function animationThree() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < rowLength; i++) {
+    for (let j = 0; j < columnLength; j++) {
+      let x = i * size;
+      let y = j * size;
+      let coefX = event.clientX - x;
+      let coefY = event.clientY - y;
+      let commonCoef = Math.abs(coefY) + Math.abs(coefX);
+      let shift = 500 / Math.abs(commonCoef);
+      ctx.strokeStyle = `rgba(0,${shift * 50},100, ${shift / 2}`;
+
+      ctx.beginPath();
+      ctx.arc(x + (500 / commonCoef * coefX), y + (500 / commonCoef * Math.sin(coefY)), Math.min(shift, 10), 0, 2 * Math.PI);
+      ctx.stroke();
+    }
+  }
+}
+
+// function animationFour() {
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+//   for (let i = 0; i < rowLength; i++) {
+//     for (let j = 0; j < columnLength; j++) {
+//       let x = i * size;
+//       let y = j * size;
+//       let coefX = event.clientX - x;
+//       let coefY = event.clientY - y;
+//       let commonCoef = Math.abs(coefY) + Math.abs(coefX);
+//       let shift = 100 / Math.abs(commonCoef) + 0.5;
+//       ctx.strokeStyle = `rgba(${shift * 100},106,173, ${shift / 2}`;
+
+//       ctx.beginPath();
+//       ctx.arc(x + (100 / commonCoef * coefX), y + (100 / commonCoef * coefY), Math.min(500 / commonCoef, 10), 0, 2 * Math.PI);
+//       ctx.stroke();
+//     }
+//   }
+// }
+
 document.addEventListener('keydown', ev => {
   if (ev.key === '1') {
     update = animationOne;
   } else if (ev.key === '2') {
     update = animationTwo;
+  } else if (ev.key === '3') {
+    update = animationThree;
   }
+  update();
 })
 
-setInterval(() => {
-  update();
-}, 17)
-
-document.addEventListener('mousemove', ev => event = ev)
+document.addEventListener('mousemove', ev => {event = ev; update()})
